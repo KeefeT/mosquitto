@@ -29,6 +29,7 @@ Contributors:
 struct mosq_config {
 	char *id;
 	int protocol_version;
+    int af_preference;
 	int keepalive;
 	char *host;
 	int port;
