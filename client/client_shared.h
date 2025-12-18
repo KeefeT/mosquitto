@@ -51,6 +51,7 @@ struct mosq_config {
 	char *id;
 	char *id_prefix;
 	int protocol_version;
+    int af_preference;
 	int keepalive;
 	char *host;
 	int port;

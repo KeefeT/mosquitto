@@ -27,6 +27,7 @@ Contributors:
 #ifndef WIN32
 #include <unistd.h>
 #include <strings.h>
+#include <sys/socket.h>
 #else
 #include <process.h>
 #include <winsock2.h>
@@ -202,6 +203,7 @@ static void init_config(struct mosq_config *cfg, int pub_or_sub)
 		cfg->protocol_version = MQTT_PROTOCOL_V311;
 	}
 	cfg->session_expiry_interval = -1; /* -1 means unset here, the user can't set it to -1. */
+    cfg->af_preference = AF_UNSPEC;
 }
 
 void client_config_cleanup(struct mosq_config *cfg)
@@ -1217,6 +1219,10 @@ int client_config_line_proc(struct mosq_config *cfg, int pub_or_sub, int argc, c
 				}
 			}
 			i++;
+		}else if(!strcmp(argv[i], "-4") || !strcmp(argv[i], "--ipv4")){
+			cfg->af_preference = AF_INET;
+		}else if(!strcmp(argv[i], "-6") || !strcmp(argv[i], "--ipv6")){
+			cfg->af_preference = AF_INET6;
 		}else{
 			goto unknown_option;
 		}
@@ -1236,6 +1242,7 @@ int client_opts_set(struct mosquitto *mosq, struct mosq_config *cfg)
 #endif
 
 	mosquitto_int_option(mosq, MOSQ_OPT_PROTOCOL_VERSION, cfg->protocol_version);
+    mosquitto_int_option(mosq, MOSQ_OPT_AF_PREFERENCE, cfg->af_preference);
 
 	if(cfg->will_topic && mosquitto_will_set_v5(mosq, cfg->will_topic,
 				cfg->will_payloadlen, cfg->will_payload, cfg->will_qos,
