@@ -1585,6 +1585,10 @@ libmosq_EXPORT int mosquitto_opts_set(struct mosquitto *mosq, enum mosq_opt_t op
  *	MOSQ_OPT_TLS_USE_OS_CERTS - Set to 1 to instruct the client to load and
  *	          trust OS provided CA certificates for use with TLS connections.
  *	          Set to 0 (the default) to only use manually specified CA certs.
+ *
+ *  MOSQ_OPT_AF_PREFERENCE - Valid values: AF_UNSPEC, AF_INET, AF_INET6. Set to
+ *            tell libmosquitto which address family to use when getting address
+ *            info. Set to AF_UNSPEC (the default) to have no preference.
  */
 libmosq_EXPORT int mosquitto_int_option(struct mosquitto *mosq, enum mosq_opt_t option, int value);
 
