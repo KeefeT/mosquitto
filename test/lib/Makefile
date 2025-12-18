@@ -30,6 +30,10 @@ c : test-compile
 	./01-unpwd-set.py $@/01-unpwd-set.test
 	./01-will-set.py $@/01-will-set.test
 	./01-will-unpwd-set.py $@/01-will-unpwd-set.test
+	./02-subscribe-af-ipv4-pass.py $@/02-subscribe-af-ipv4-client.test
+	./02-subscribe-af-ipv4-fail.py $@/02-subscribe-af-ipv6-client.test
+	./02-subscribe-af-ipv6-pass.py $@/02-subscribe-af-ipv6-client.test
+	./02-subscribe-af-ipv6-fail.py $@/02-subscribe-af-ipv4-client.test
 	./02-subscribe-qos0.py $@/02-subscribe-qos0.test
 	./02-subscribe-qos1.py $@/02-subscribe-qos1.test
 	./02-subscribe-qos1.py $@/02-subscribe-qos1-async1.test
