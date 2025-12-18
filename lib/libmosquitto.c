@@ -179,6 +179,7 @@ int mosquitto_reinitialise(struct mosquitto *mosq, const char *id, bool clean_st
 	}
 	mosq->transport = mosq_t_tcp;
 	mosq->protocol = mosq_p_mqtt311;
+    mosq->address_family = AF_UNSPEC;
 	mosq->sock = INVALID_SOCKET;
 	mosq->sockpairR = INVALID_SOCKET;
 	mosq->sockpairW = INVALID_SOCKET;

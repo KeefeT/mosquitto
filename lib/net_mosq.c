@@ -339,7 +339,7 @@ int net__try_connect_step1(struct mosquitto *mosq, const char *host)
 		return MOSQ_ERR_NOMEM;
 	}
 
-	hints->ai_family = AF_UNSPEC;
+	hints->ai_family = mosq->address_family;
 	hints->ai_socktype = SOCK_STREAM;
 
 	mosq->adns->ar_name = host;
@@ -424,7 +424,7 @@ int net__try_connect_step2(struct mosquitto *mosq, uint16_t port, mosq_sock_t *s
 #endif
 
 
-static int net__try_connect_tcp(const char *host, uint16_t port, mosq_sock_t *sock, const char *bind_address, bool blocking)
+static int net__try_connect_tcp(const char *host, uint16_t port, mosq_sock_t *sock, const char *bind_address, bool blocking, int address_family)
 {
 	struct addrinfo hints;
 	struct addrinfo *ainfo, *rp;
@@ -436,7 +436,7 @@ static int net__try_connect_tcp(const char *host, uint16_t port, mosq_sock_t *so
 
 	*sock = INVALID_SOCKET;
 	memset(&hints, 0, sizeof(struct addrinfo));
-	hints.ai_family = AF_UNSPEC;
+	hints.ai_family = address_family;
 	hints.ai_socktype = SOCK_STREAM;
 
 	s = getaddrinfo(host, NULL, &hints, &ainfo);
@@ -559,7 +559,7 @@ static int net__try_connect_unix(const char *host, mosq_sock_t *sock)
 #endif
 
 
-int net__try_connect(const char *host, uint16_t port, mosq_sock_t *sock, const char *bind_address, bool blocking)
+int net__try_connect(const char *host, uint16_t port, mosq_sock_t *sock, const char *bind_address, bool blocking, int address_family)
 {
 	if(port == 0){
 #ifdef WITH_UNIX_SOCKETS
@@ -568,7 +568,7 @@ int net__try_connect(const char *host, uint16_t port, mosq_sock_t *sock, const c
 		return MOSQ_ERR_NOT_SUPPORTED;
 #endif
 	}else{
-		return net__try_connect_tcp(host, port, sock, bind_address, blocking);
+		return net__try_connect_tcp(host, port, sock, bind_address, blocking, address_family);
 	}
 }
 
@@ -970,7 +970,7 @@ int net__socket_connect(struct mosquitto *mosq, const char *host, uint16_t port,
 		return MOSQ_ERR_INVAL;
 	}
 
-	rc = net__try_connect(host, port, &mosq->sock, bind_address, blocking);
+	rc = net__try_connect(host, port, &mosq->sock, bind_address, blocking, mosq->address_family);
 	if(rc > 0){
 		return rc;
 	}

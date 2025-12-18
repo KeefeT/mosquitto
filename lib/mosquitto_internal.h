@@ -308,6 +308,7 @@ struct mosquitto {
 	struct ws_data wsd;
 #endif
 	enum mosquitto__protocol protocol;
+    int address_family;
 	char *address;
 	char *id;
 	char *username;
