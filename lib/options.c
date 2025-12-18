@@ -20,14 +20,14 @@ Contributors:
 
 #ifndef WIN32
 #  include <strings.h>
+#  include <sys/socket.h>
+#else
+#  include <winsock2.h>
 #endif
 
 #include <string.h>
 
 #ifdef WITH_TLS
-#  ifdef WIN32
-#    include <winsock2.h>
-#  endif
 #  include <openssl/engine.h>
 #endif
 
@@ -506,6 +506,18 @@ int mosquitto_int_option(struct mosquitto *mosq, enum mosq_opt_t option, int val
 		case MOSQ_OPT_TCP_NODELAY:
 			mosq->tcp_nodelay = (bool)value;
 			break;
+
+        case MOSQ_OPT_AF_PREFERENCE:
+            if(value == AF_UNSPEC){
+				mosq->af_preference = AF_UNSPEC;
+			}else if(value == AF_INET){
+				mosq->af_preference = AF_INET;
+			}else if(value == AF_INET6){
+				mosq->af_preference = AF_INET6;
+			}else{
+				return MOSQ_ERR_INVAL;
+			}
+            break;
 
 		default:
 			return MOSQ_ERR_INVAL;
