@@ -27,6 +27,7 @@ Contributors:
 #ifndef WIN32
 #include <unistd.h>
 #include <strings.h>
+#include <sys/socket.h>
 #else
 #include <process.h>
 #include <winsock2.h>
@@ -49,6 +50,7 @@ void init_config(struct mosq_config *cfg)
 	cfg->qos = 1;
 	cfg->port = PORT_UNDEFINED;
 	cfg->protocol_version = MQTT_PROTOCOL_V5;
+    cfg->address_family = AF_UNSPEC;
 }
 
 
@@ -467,6 +469,10 @@ static int client_config_line_proc(struct mosq_config *cfg, int *argc, char **ar
 			cfg->verbose = 1;
 		}else if(!strcmp(argv[0], "--version")){
 			return 1;
+		}else if(!strcmp(argv[0], "-4") || !strcmp(argv[0], "--ipv4")){
+			cfg->address_family = AF_INET;
+		}else if(!strcmp(argv[0], "-6") || !strcmp(argv[0], "--ipv6")){
+			cfg->address_family = AF_INET6;
 		}else{
 			goto unknown_option;
 		}
@@ -601,6 +607,7 @@ int client_opts_set(struct mosquitto *mosq, struct mosq_config *cfg)
 	char password[1000];
 
 	mosquitto_int_option(mosq, MOSQ_OPT_PROTOCOL_VERSION, cfg->protocol_version);
+    mosquitto_int_option(mosq, MOSQ_OPT_ADDRESS_FAMILY, cfg->address_family);
 
 	if(cfg->username && cfg->password == NULL){
 		/* Ask for password */
