@@ -12,6 +12,10 @@ tests = [
     (1, ['./01-will-set.py', 'c/01-will-set.test']),
     (1, ['./01-will-unpwd-set.py', 'c/01-will-unpwd-set.test']),
 
+    (1, ['./02-subscribe-af-ipv4-pass.py', 'c/02-subscribe-af-client.test', '1888', '-4']),
+    (1, ['./02-subscribe-af-ipv4-fail.py', 'c/02-subscribe-af-client.test', '1888', '-6']),
+    (1, ['./02-subscribe-af-ipv6-pass.py', 'c/02-subscribe-af-client.test', '1888', '-6']),
+    (1, ['./02-subscribe-af-ipv6-fail.py', 'c/02-subscribe-af-client.test', '1888', '-4']),
     (1, ['./02-subscribe-qos0.py', 'c/02-subscribe-qos0.test']),
     (1, ['./02-subscribe-qos1.py', 'c/02-subscribe-qos1.test']),
     (1, ['./02-subscribe-qos1.py', 'c/02-subscribe-qos1-async1.test']),

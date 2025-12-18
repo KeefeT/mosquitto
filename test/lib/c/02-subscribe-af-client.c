@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <mosquitto.h>
 
 #ifdef WIN32
@@ -14,6 +15,11 @@
 #  include <errno.h>
 #endif
 
+#define USE_IPV6 6
+#define USE_IPV4 4
+
+static int af_preference = -1;
+static char* host;
 static int run = -1;
 
 void on_connect(struct mosquitto *mosq, void *obj, int rc)
@@ -42,7 +48,7 @@ void on_subscribe(struct mosquitto *mosq, void *obj, int mid, int qos_count, con
     if(fd >= 0 && getpeername(fd, (struct sockaddr *)&ss, &slen) == 0)
 #endif
     {
-        if(ss.ss_family != AF_INET6){
+        if(ss.ss_family != af_preference){
             exit(1);
         }
     }else{
@@ -56,7 +62,24 @@ int main(int argc, char *argv[])
 	int rc;
 	struct mosquitto *mosq;
 
+    if(argc < 2){
+        return 1;
+    }
+
 	int port = atoi(argv[1]);
+    for(int i = 1; i < argc - 1; i++){
+        if(!strcmp(argv[i], "-4")){
+            af_preference = AF_INET;
+            host = "127.0.0.1";
+        }else if(!strcmp(argv[i], "-6")){
+            af_preference = AF_INET6;
+            host = "::1";
+        }
+    }
+
+    if(af_preference < 0){
+        exit(1);
+    }
 
 	mosquitto_lib_init();
 
@@ -64,12 +87,12 @@ int main(int argc, char *argv[])
 	if(mosq == NULL){
 		return 1;
 	}
-    mosquitto_int_option(mosq, MOSQ_OPT_AF_PREFERENCE, AF_INET6);
+    mosquitto_int_option(mosq, MOSQ_OPT_AF_PREFERENCE, af_preference);
 	mosquitto_connect_callback_set(mosq, on_connect);
 	mosquitto_disconnect_callback_set(mosq, on_disconnect);
 	mosquitto_subscribe_callback_set(mosq, on_subscribe);
 
-	rc = mosquitto_connect(mosq, "::1", port, 60);
+	rc = mosquitto_connect(mosq, host, port, 60);
 
 	while(run == -1){
 		mosquitto_loop(mosq, -1, 1);

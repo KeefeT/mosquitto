@@ -1,16 +1,11 @@
 #!/usr/bin/env python3
 
-# Test whether a client sends a correct SUBSCRIBE to a topic with QoS 0.
+# Test whether a client fails to connect to broker when address family is mismatched
 
-# The client should connect to port 1888 with keepalive=60, clean session set,
-# and client id subscribe-qos0-test
-# The test will send a CONNACK message to the client with rc=0. Upon receiving
-# the CONNACK and verifying that rc=0, the client should send a SUBSCRIBE
-# message to subscribe to topic "qos0/test" with QoS=0. If rc!=0, the client
-# should exit with an error.
-# Upon receiving the correct SUBSCRIBE message, the test will reply with a
-# SUBACK message with the accepted QoS set to 0. On receiving the SUBACK
-# message, the client should send a DISCONNECT message.
+# The broker is started and uses AF_INET6 address family. The client is then started 
+# with -6 arg to tell it to set MOSQ_OPT_AF_PREFERENCE to AF_INET6. 
+# 
+# Expected behavior is that the client connect successfully, in which case, the test passes.
 
 from mosq_test_helper import *
 

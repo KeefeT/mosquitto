@@ -16,6 +16,8 @@ vg_logfiles = []
 
 
 class TestError(Exception):
+    TEST_FAIL = 1
+    TEST_PASS = 0
     def __init__(self, message="Mismatched packets"):
         self.message = message
 
