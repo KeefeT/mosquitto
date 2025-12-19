@@ -27,7 +27,6 @@ Contributors:
 #ifndef WIN32
 #  include <signal.h>
 #  include <strings.h>
-#  include <sys/socket.h>
 #  include <unistd.h>
 #else
 #  include <process.h>
@@ -229,7 +228,6 @@ static void init_config(struct mosq_config *cfg, int pub_or_sub)
 	}
 	cfg->session_expiry_interval = -1; /* -1 means unset here, the user can't set it to -1. */
 	cfg->transport = MOSQ_T_TCP;
-    cfg->address_family = AF_UNSPEC;
 }
 
 
@@ -1330,11 +1328,7 @@ int client_config_line_proc(struct mosq_config *cfg, int pub_or_sub, int argc, c
 				cfg->protocol_version = MQTT_PROTOCOL_V5;
 			}
 			i++;
-		}else if(!strcmp(argv[i], "-4") || !strcmp(argv[i], "--ipv4")){
-			cfg->address_family = AF_INET;
-		}else if(!strcmp(argv[i], "-6") || !strcmp(argv[i], "--ipv6")){
-			cfg->address_family = AF_INET6;
-        }else{
+		}else{
 			goto unknown_option;
 		}
 	}
@@ -1437,7 +1431,6 @@ int client_opts_set(struct mosquitto *mosq, struct mosq_config *cfg)
 
 	mosquitto_int_option(mosq, MOSQ_OPT_PROTOCOL_VERSION, cfg->protocol_version);
 	mosquitto_int_option(mosq, MOSQ_OPT_TRANSPORT, cfg->transport);
-    mosquitto_int_option(mosq, MOSQ_OPT_ADDRESS_FAMILY, cfg->address_family);
 
 	if(cfg->will_topic && mosquitto_will_set_v5(mosq, cfg->will_topic,
 			cfg->will_payloadlen, cfg->will_payload, cfg->will_qos,
