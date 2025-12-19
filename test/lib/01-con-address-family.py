@@ -58,16 +58,22 @@ def do_test(cmd, args, family, expect_failure):
 # Tell client to connect to 127.0.0.1 using AF_INET, with broker listening on AF_INET lo (PASS)
 do_test("c/01-con-address-family.test", ["-4"], socket.AF_INET, False)
 # Tell client to connect to ::1 using AF_INET6, with broker listening on AF_INET lo (FAIL)
-try:
-    do_test("c/01-con-address-family.test", ["-6"], socket.AF_INET, True)
-except SystemExit:
-    print("test passes, expected timeout\n")
+do_test("c/01-con-address-family.test", ["-6"], socket.AF_INET, True)
 
 # IPv6
 # Tell client to connect to ::1 using AF_INET6, with broker listening on AF_INET6 lo (PASS)
 do_test("c/01-con-address-family.test", ["-6"], socket.AF_INET6, False)
 # Tell client to connect to 127.0.0.1 using AF_INET, with broker listening on AF_INET6 lo (FAIL)
-try:
-    do_test("c/01-con-address-family.test", ["-4"], socket.AF_INET6, True)
-except SystemExit:
-    print("test passes, expected timeout\n")
+do_test("c/01-con-address-family.test", ["-4"], socket.AF_INET6, True)
+
+# IPv4
+# Tell client to connect to 127.0.0.1 using AF_INET, with broker listening on AF_INET lo (PASS)
+do_test("cpp/01-con-address-family.test", ["-4"], socket.AF_INET, False)
+# Tell client to connect to ::1 using AF_INET6, with broker listening on AF_INET lo (FAIL)
+do_test("cpp/01-con-address-family.test", ["-6"], socket.AF_INET, True)
+
+# IPv6
+# Tell client to connect to ::1 using AF_INET6, with broker listening on AF_INET6 lo (PASS)
+do_test("cpp/01-con-address-family.test", ["-6"], socket.AF_INET6, False)
+# Tell client to connect to 127.0.0.1 using AF_INET, with broker listening on AF_INET6 lo (FAIL)
+do_test("cpp/01-con-address-family.test", ["-4"], socket.AF_INET6, True)

@@ -7,6 +7,7 @@ LOCAL_CXXFLAGS+=-I${R}/include -I${R}/test -I${R}/lib/cpp -DDEBUG -Werror -W
 LIBS=${LIBMOSQ} ${R}/lib/cpp/libmosquittopp.so.1
 
 SRC = \
+	01-con-address-family.cpp \
 	01-con-discon-success.cpp \
 	01-con-discon-success-v5.cpp \
 	01-con-discon-will-clear.cpp \
