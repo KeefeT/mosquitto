@@ -68,9 +68,10 @@ int main(int argc, char *argv[])
 	mosquitto_connect_callback_set(mosq, on_connect);
 	mosquitto_disconnect_callback_set(mosq, on_disconnect);
 
-	if (MOSQ_ERR_SUCCESS != mosquitto_connect(mosq, host, port, 60)) {
-        printf("cannot connect to host %s:%d!", host, port);
-        run = 0;
+    int rc = mosquitto_connect(mosq, host, port, 60);
+
+	if (MOSQ_ERR_SUCCESS != rc) {
+        return rc;
     }
 
 	while(run == -1){

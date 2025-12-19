@@ -29,6 +29,9 @@ def do_test(cmd, args, family, expect_failure):
         (conn, address) = sock.accept()
         conn.settimeout(5)
 
+        if expect_failure:
+            raise mosq_test.TestError("Shouldn't have connected!")
+
         mosq_test.expect_packet(conn, "connect", connect_packet)
         conn.send(connack_packet)
 
@@ -38,7 +41,7 @@ def do_test(cmd, args, family, expect_failure):
         conn.close()
     except mosq_test.TestError:
         pass
-    except TimeoutError:
+    except socket.timeout:
         if expect_failure:
             rc = 0
     finally:

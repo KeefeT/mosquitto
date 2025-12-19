@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <mosquitto/libmosquittopp.h>
 
@@ -65,9 +66,10 @@ int main(int argc, char *argv[])
 	mosq = new mosquittopp_test("con-address-family-test");
 
     mosq->int_option(MOSQ_OPT_ADDRESS_FAMILY, af_preference);
+    int rc = mosq->connect(host, port, 60);
 
-	if (MOSQ_ERR_SUCCESS != mosq->connect(host, port, 60)) {
-        run = 0;
+	if (MOSQ_ERR_SUCCESS != rc) {
+        return rc;
     }
 
 	while(run == -1){
