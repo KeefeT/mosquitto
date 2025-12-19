@@ -35,7 +35,6 @@ extern "C" {
 struct mosq_config {
 	char *id;
 	int protocol_version;
-    int address_family;
 	int keepalive;
 	char *host;
 	int port;
