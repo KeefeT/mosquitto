@@ -150,7 +150,9 @@ libmosq_EXPORT int mosquitto_opts_set(struct mosquitto *mosq, enum mosq_opt_t op
  *
  *  MOSQ_OPT_ADDRESS_FAMILY - Valid values: AF_UNSPEC, AF_INET, AF_INET6. Set to
  *            tell libmosquitto which address family to use when getting address
- *            info. Set to AF_UNSPEC (the default) to have no preference.
+ *            info. Set to AF_UNSPEC (the default) to have no preference. Will 
+ *            return MOSQ_ERR_INVAL if trying to set option during an active 
+ *            connection.
  */
 libmosq_EXPORT int mosquitto_int_option(struct mosquitto *mosq, enum mosq_opt_t option, int value);
 

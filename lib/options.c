@@ -20,9 +20,6 @@ Contributors:
 
 #ifndef WIN32
 #  include <strings.h>
-#  include <sys/socket.h>
-#else
-#  include <winsock2.h>
 #endif
 
 #include <string.h>
@@ -34,6 +31,7 @@ Contributors:
 #include "mosquitto.h"
 #include "mosquitto_internal.h"
 #include "mosquitto/mqtt_protocol.h"
+#include "net_mosq.h"
 #include "util_mosq.h"
 #include "will_mosq.h"
 
@@ -594,8 +592,12 @@ int mosquitto_int_option(struct mosquitto *mosq, enum mosq_opt_t option, int val
 			return MOSQ_ERR_NOT_SUPPORTED;
 #endif
 			break;
-        
+
         case MOSQ_OPT_ADDRESS_FAMILY:
+            if(mosq->sock != INVALID_SOCKET){
+                /* Do not set address family during active connection */
+                return MOSQ_ERR_INVAL;
+            }
             if(value == AF_UNSPEC){
 				mosq->address_family = AF_UNSPEC;
 			}else if(value == AF_INET){

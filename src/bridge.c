@@ -1044,7 +1044,7 @@ void bridge_check(void)
 							context->bridge->addresses[0].port,
 							&context->bridge->primary_retry_sock,
 							context->bridge->bind_address, false,
-                            context->address_family);
+                            AF_UNSPEC);
 
 					if(rc == 0){
 						COMPAT_CLOSE(context->bridge->primary_retry_sock);

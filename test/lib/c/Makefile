@@ -8,6 +8,7 @@ LOCAL_CFLAGS+=-Werror -ggdb
 LOCAL_LIBADD+=${LIBMOSQ}
 
 SRC = \
+	01-con-address-family.c \
 	01-con-discon-success.c \
 	01-con-discon-success-v5.c \
 	01-con-discon-will.c \
@@ -22,7 +23,6 @@ SRC = \
 	01-unpwd-set.c \
 	01-will-set.c \
 	01-will-unpwd-set.c \
-	02-subscribe-af-client.c \
 	02-subscribe-helper-callback-qos2.c \
 	02-subscribe-helper-simple-qos2.c \
 	02-subscribe-qos0.c \

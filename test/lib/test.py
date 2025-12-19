@@ -6,6 +6,7 @@ import ptest
 
 tests = [
     (1, './msg_sequence_test.py'),
+    (1, './01-con-address-family.py'),
     (1, './01-con-discon-success-v5.py'),
     (1, './01-con-discon-success.py'),
     (1, './01-con-discon-will-clear.py'),

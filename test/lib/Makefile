@@ -25,6 +25,7 @@ test-compile-cpp :
 	$(MAKE) -C cpp
 
 test : test-compile
+	./01-con-address-family.py
 	./01-con-discon-success.py
 	./01-con-discon-success-v5.py
 	./01-con-discon-will.py
@@ -39,7 +40,6 @@ test : test-compile
 	./01-unpwd-set.py
 	./01-will-set.py
 	./01-will-unpwd-set.py
-	./02-subscribe-af.py
 	./02-subscribe-qos0.py
 	./02-subscribe-qos1.py
 	./02-subscribe-qos2.py
