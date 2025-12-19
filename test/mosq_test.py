@@ -53,12 +53,11 @@ def env_add_ld_library_path(env=None):
 
     return env
 
-def listen_sock(port, sock_family=socket.AF_INET):
-    addr = "::1" if (sock_family == socket.AF_INET6) else ''
-    sock = socket.socket(sock_family, socket.SOCK_STREAM)
+def listen_sock(port):
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sock.settimeout(10)
-    sock.bind((addr, port))
+    sock.bind(('', port))
     sock.listen(5)
     return sock
 
@@ -897,12 +896,12 @@ def get_port(count=1):
 def do_ping(sock, error_string="pingresp"):
      do_send_receive(sock, gen_pingreq(), gen_pingresp(), error_string)
 
-def client_test(client_cmd, client_args, callback, cb_data, sock_family=socket.AF_INET):
+def client_test(client_cmd, client_args, callback, cb_data):
     port = get_port()
 
     rc = 1
 
-    sock = listen_sock(port, sock_family)
+    sock = listen_sock(port)
 
     args = [get_build_root() + "/test/lib/" + client_cmd, str(port)]
     if client_args is not None:

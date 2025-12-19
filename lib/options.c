@@ -25,6 +25,9 @@ Contributors:
 #include <string.h>
 
 #ifdef WITH_TLS
+#  ifdef WIN32
+#    include <winsock2.h>
+#  endif
 #  include <openssl/engine.h>
 #endif
 
