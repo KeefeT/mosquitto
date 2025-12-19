@@ -22,6 +22,7 @@ SRC = \
 	01-unpwd-set.c \
 	01-will-set.c \
 	01-will-unpwd-set.c \
+	02-subscribe-af-client.c \
 	02-subscribe-helper-callback-qos2.c \
 	02-subscribe-helper-simple-qos2.c \
 	02-subscribe-qos0.c \

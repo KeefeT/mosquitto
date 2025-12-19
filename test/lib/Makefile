@@ -39,6 +39,7 @@ test : test-compile
 	./01-unpwd-set.py
 	./01-will-set.py
 	./01-will-unpwd-set.py
+	./02-subscribe-af.py
 	./02-subscribe-qos0.py
 	./02-subscribe-qos1.py
 	./02-subscribe-qos2.py
